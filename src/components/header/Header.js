@@ -1,0 +1,15 @@
+import LeftHeader from './leftHeader/LeftHeader'
+import MiddleHeader from './middleHeader/MiddleHeader'
+import RightHeader from './rightHeader/RightHeader'
+
+const Header = () => {
+  return (
+    <div className="flex justify-between h-14 px-4 bg-white">
+      <LeftHeader />
+      <MiddleHeader />
+      <RightHeader />
+    </div>
+  )
+}
+
+export default Header
