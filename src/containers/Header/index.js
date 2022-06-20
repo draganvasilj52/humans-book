@@ -1,6 +1,7 @@
-import LeftHeader from './leftHeader/LeftHeader'
-import MiddleHeader from './middleHeader/MiddleHeader'
-import RightHeader from './rightHeader/RightHeader'
+import LeftHeader from "./LeftHeader";
+import MiddleHeader from "./MiddleHeader";
+import RightHeader from "./RightHeader";
+
 
 const Header = () => {
   return (

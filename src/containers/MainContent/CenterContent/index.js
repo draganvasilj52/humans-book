@@ -1,5 +1,5 @@
 import React from 'react'
-import PostList from './postsList/PostList'
+import PostList from "../../../components/PostsList/PostList";
 
 const CenterContent = () => {
   return (

@@ -1,7 +1,7 @@
-import { db } from '../../../../firebase/config'
+import { db } from '../../firebase/config'
 import { collection, getDocs } from 'firebase/firestore'
 import { useEffect, useState } from 'react'
-import PostListItem from '../postsListItem/PostsListItem'
+import PostsListItem from "../PostsListItem/PostsListItem";
 
 const PostList = () => {
   const [data, setData] = useState([])
@@ -18,7 +18,7 @@ const PostList = () => {
   return (
     <div className="space-y-5 bg-customBg-100">
       {data.map((item) => (
-        <PostListItem item={item} key={item.id} />
+        <PostsListItem item={item} key={item.id} />
       ))}
     </div>
   )

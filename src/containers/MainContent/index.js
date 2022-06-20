@@ -1,7 +1,8 @@
 import React from 'react'
-import CenterContent from './centerContent/CenterContent'
-import LeftContent from './leftContent/LeftContent'
-import RightContent from './rightContent/RightContent'
+import LeftContent from "./LeftContent";
+import CenterContent from "./CenterContent";
+import RightContent from "./RightContent";
+
 
 const MainContent = () => {
   return (
