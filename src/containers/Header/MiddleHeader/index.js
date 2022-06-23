@@ -7,6 +7,7 @@ import { useState } from 'react'
 const MiddleHeader = () => {
   const [activeIcon, setActiveIcon] = useState('home')
   const [hoveredIcon, setHoveredIcon] = useState('')
+
   return (
     <div className="flex items-center justify-center space-x-2 w-2/5 ">
       <div
