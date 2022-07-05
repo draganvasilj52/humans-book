@@ -3,10 +3,12 @@ import SignIn from '../pages/SignIn/SignIn'
 import MainContent from '../containers/MainContent'
 import Header from '../containers/Header'
 import { useSelector } from 'react-redux'
+import ProfilePage from '../pages/ProfilePage'
 
 export default function Router() {
   const user = useSelector((state) => state.data.user)
   console.log(user)
+
   const routes = [
     {
       path: '/',
@@ -15,12 +17,20 @@ export default function Router() {
           <Header /> <MainContent />
         </>
       ) : (
-        <SignIn />
+        <div className="bg-customBg-100 h-screen flex items-center justify-center">
+          <SignIn />
+        </div>
       ),
     },
     {
-      path: '/home',
-      element: 'dsad',
+      path: `/${user.displayName}`,
+      element: user ? (
+        <ProfilePage />
+      ) : (
+        <div className="bg-customBg-100 h-screen flex items-center justify-center">
+          <SignIn />
+        </div>
+      ),
     },
     {
       path: '/media',

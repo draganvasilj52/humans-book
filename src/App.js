@@ -1,11 +1,10 @@
 import Router from './routes'
 
+import { useSelector } from 'react-redux'
 function App() {
-  return (
-    <div className="bg-customBg-100 h-screen">
-      <Router />
-    </div>
-  )
+  const realUser = useSelector((state) => state.data.user)
+  console.log('pravi user', realUser)
+  return <Router />
 }
 
 export default App

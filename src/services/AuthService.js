@@ -15,5 +15,5 @@ export const signupUser = async (email, password) =>
 export const signOutUser = async () => await signOut(authentication)
 
 export const getUser = onAuthStateChanged(authentication, (user) =>
-  console.log('USER STATUS: ', user)
+  console.log(user)
 )

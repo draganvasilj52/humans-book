@@ -10,6 +10,12 @@ module.exports = {
         secondaryButton: {
           100: '#E4E6EB',
         },
+        menuBg: {
+          100: '#F7F8FA',
+        },
+        inputColor: {
+          100: '#65676B',
+        },
       },
     },
   },
