@@ -11,7 +11,7 @@ const PostCreateForm = ({ setCreatePost }) => {
   const [textData, setTextData] = useState('')
   const [uploadError, setUploadError] = useState('')
   const user = useSelector((state) => state.data.user)
-  console.log(imageData)
+
   const types = ['image/png', 'image/jpeg']
 
   const handleImg = (e) => {

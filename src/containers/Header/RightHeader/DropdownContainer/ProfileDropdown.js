@@ -5,8 +5,11 @@ import { logOutUser } from '../../../../features/dataSlice'
 import { signOutUser } from './../../../../services/AuthService'
 import SettingsIcon from '@mui/icons-material/Settings'
 import HelpIcon from '@mui/icons-material/Help'
+import { useNavigate } from 'react-router-dom'
 
 const ProfileDropdown = () => {
+  const navigate = useNavigate()
+
   const user = useSelector((state) => state.data.user)
 
   const dispatch = useDispatch()
@@ -21,7 +24,10 @@ const ProfileDropdown = () => {
       style={{ width: '40%' }}
       className="bg-white rounded absolute right-4 top-14 z-10 p-3 flex flex-col"
     >
-      <div className="flex space-x-3 p-2 hover:bg-customBg-100 hover:rounded cursor-pointer">
+      <div
+        onClick={() => navigate(`/${user.displayName}`)}
+        className="flex space-x-3 p-2 hover:bg-customBg-100 hover:rounded cursor-pointer"
+      >
         <div
           className="h-16 w-16 bg-cover"
           style={{

@@ -1,21 +1,16 @@
 import { useRoutes } from 'react-router-dom'
 import SignIn from '../pages/SignIn/SignIn'
-import MainContent from '../containers/MainContent'
-import Header from '../containers/Header'
 import { useSelector } from 'react-redux'
 import ProfilePage from '../pages/ProfilePage'
-
+import HomePage from '../pages/HomePage'
 export default function Router() {
   const user = useSelector((state) => state.data.user)
-  console.log(user)
 
   const routes = [
     {
       path: '/',
       element: user ? (
-        <>
-          <Header /> <MainContent />
-        </>
+        <HomePage />
       ) : (
         <div className="bg-customBg-100 h-screen flex items-center justify-center">
           <SignIn />
