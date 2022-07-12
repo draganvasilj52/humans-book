@@ -28,8 +28,15 @@ const dataSlice = createSlice({
   initialState,
   reducers: {
     logUser(state, action) {
-      let userData = action.payload.user
-      state.user = { ...userData }
+      let userData = action.payload
+      let loggedUser = {
+        email: userData.email,
+        photoURL: userData.photoURL,
+        id: userData.id,
+        displayName: userData.displayName,
+        posts: userData.posts,
+      }
+      state.user = loggedUser
       localStorage.setItem('user', JSON.stringify(state.user))
     },
     logOutUser(state) {

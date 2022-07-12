@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { logUser } from '../../features/dataSlice'
 import { useDispatch } from 'react-redux'
 import SignUpV2 from './../SignUp/SignUpV2'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { db } from '../../firebase/config'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -21,8 +23,28 @@ const SignIn = () => {
         return
       }
       const user = await loginUser(email, password)
+      const userCredentials = { ...user.user }
 
-      dispatch(logUser(user))
+      const loggedUserId = userCredentials.uid
+
+      const q = query(
+        collection(db, 'users'),
+        where('id', '==', `${loggedUserId}`)
+      )
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let evander = {}
+        querySnapshot.forEach((doc) => {
+          evander = { ...doc.data() }
+        })
+        const dispatchedData = {
+          email: evander.email,
+          photoURL: evander.photoURL,
+          id: loggedUserId,
+          displayName: evander.displayName,
+          posts: evander.posts,
+        }
+        dispatch(logUser(dispatchedData))
+      })
     } catch (error) {
       setError('Invalid Credentials')
     }

@@ -5,6 +5,9 @@ import { useDispatch } from 'react-redux'
 import { logUser } from '../../features/dataSlice'
 import { authentication } from '../../firebase/config'
 import { updateProfile } from 'firebase/auth'
+import { setDoc } from 'firebase/firestore'
+import { db } from '../../firebase/config'
+import { doc } from 'firebase/firestore'
 
 const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const [enterName, setEnterName] = useState('')
@@ -28,7 +31,18 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
           'https://images.unsplash.com/photo-1542309667-2a115d1f54c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80',
       })
 
-      dispatch(logUser(newUser.user))
+      const userCredentials = { ...newUser.user }
+
+      const dispatchedData = {
+        email: userCredentials.email,
+        photoURL: userCredentials.photoURL,
+        id: userCredentials.uid,
+        displayName: userCredentials.displayName,
+        posts: [],
+      }
+
+      dispatch(logUser(dispatchedData))
+      await setDoc(doc(db, 'users', `${userCredentials.uid}`), dispatchedData)
     } catch (error) {
       setError('Invalid Credentials')
     }
@@ -61,9 +75,9 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
       //   aria-hidden="true"
       className={` ${
         createNewAccount ? '' : 'hidden'
-      } bg-opacity-50 bg-white flex items-center justify-center h-screen overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full`}
+      } bg-opacity-50 bg-white flex items-center justify-center overflow-y-auto overflow-x-hidden fixed top-0 bottom-8 right-0 left-0 z-50 w-full md:inset-0`}
     >
-      <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+      <div className="relative p-4 w-full max-w-md  md:h-auto">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <button
             onClick={() => setCreateNewAccount(false)}

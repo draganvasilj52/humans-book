@@ -5,7 +5,8 @@ import { useSelector } from 'react-redux'
 import { addDoc } from 'firebase/firestore'
 import { collection } from 'firebase/firestore'
 import { getDownloadURL } from 'firebase/storage'
-
+import { doc, updateDoc } from 'firebase/firestore'
+import { arrayUnion } from 'firebase/firestore'
 const PostCreateForm = ({ setCreatePost }) => {
   const [imageData, setImageData] = useState(null)
   const [textData, setTextData] = useState('')
@@ -25,6 +26,7 @@ const PostCreateForm = ({ setCreatePost }) => {
       setUploadError('attach png and jpeg')
     }
   }
+  console.log(user)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -40,7 +42,7 @@ const PostCreateForm = ({ setCreatePost }) => {
         title: user.displayName,
         time: '1h',
         description: textData,
-        userId: user.uid,
+        userId: user.id,
         imageURL: photoURL,
       })
     } else {
@@ -48,7 +50,16 @@ const PostCreateForm = ({ setCreatePost }) => {
         title: user.displayName,
         time: '1h',
         description: textData,
-        userId: user.uid,
+        userId: user.id,
+      })
+      const washingtonRef = doc(db, 'users', `${user.id}`)
+      await updateDoc(washingtonRef, {
+        posts: arrayUnion({
+          title: user.displayName,
+          time: '1h',
+          description: textData,
+          userId: user.id,
+        }),
       })
     }
 

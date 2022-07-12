@@ -3,6 +3,7 @@ import SignIn from '../pages/SignIn/SignIn'
 import { useSelector } from 'react-redux'
 import ProfilePage from '../pages/ProfilePage'
 import HomePage from '../pages/HomePage'
+import SignInMobileFirst from '../pages/SignIn/SingInMobileFirst'
 export default function Router() {
   const user = useSelector((state) => state.data.user)
 
@@ -18,7 +19,7 @@ export default function Router() {
       ),
     },
     {
-      path: `/${user.displayName}`,
+      path: user && `/${user.displayName}`,
       element: user ? (
         <ProfilePage />
       ) : (
@@ -41,7 +42,7 @@ export default function Router() {
     },
     {
       path: '*',
-      element: <SignIn />,
+      element: <SignInMobileFirst />,
     },
   ]
   return useRoutes(routes)
