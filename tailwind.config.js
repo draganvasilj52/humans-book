@@ -28,6 +28,8 @@ module.exports = {
     screens: {
       signInBreakpoint900: '900px',
       signInBreakpoint1076: '1076px',
+      headerBreakpoint700: '700px',
+      headerBreakpoint1100: '1100px',
     },
   },
   plugins: [require('flowbite/plugin')],

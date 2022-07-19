@@ -1,10 +1,10 @@
-import Header from '../../containers/Header'
-import MainContent from '../../containers/MainContent'
+import HeaderMF from './../../containers/HeaderMF/index'
+import MainContentMF from './../../containers/MainContentMF/index'
 
 const HomePage = () => {
   return (
     <>
-      <Header /> <MainContent />
+      <HeaderMF /> <MainContentMF />
     </>
   )
 }

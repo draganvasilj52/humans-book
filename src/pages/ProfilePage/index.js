@@ -1,12 +1,11 @@
-import React from 'react'
-import Header from '../../containers/Header'
-import ProfileContent from '../../containers/ProfileContent'
+import HeaderMF from './../../containers/HeaderMF/index'
+import ProfileContentMF from './../../containers/ProfileContentMF/index'
 
 const ProfilePage = () => {
   return (
     <>
-      <Header />
-      <ProfileContent />
+      <HeaderMF />
+      <ProfileContentMF />
     </>
   )
 }

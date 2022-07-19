@@ -18,7 +18,7 @@ const PostsListItem = ({ item }) => {
             borderRadius: '50%',
           }}
         />
-        <div className="flex flex-col w-9/12">
+        <div className="flex flex-col w-11/12	">
           <p className="text-sm font-medium text-black">{item.title}</p>
           <div className="flex items-center space-x-1">
             <p className="text-xs">{item.time}</p>

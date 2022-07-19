@@ -26,7 +26,6 @@ const PostCreateForm = ({ setCreatePost }) => {
       setUploadError('attach png and jpeg')
     }
   }
-  console.log(user)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
