@@ -2,6 +2,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
 import GroupsIcon from '@mui/icons-material/Groups'
 import GamesIcon from '@mui/icons-material/Games'
+import PeopleIcon from '@mui/icons-material/People'
 import { useState } from 'react'
 
 const MiddleHeader = () => {
@@ -9,7 +10,7 @@ const MiddleHeader = () => {
   const [hoveredIcon, setHoveredIcon] = useState('')
 
   return (
-    <div className="flex items-center justify-center space-x-2 w-2/5 ">
+    <div className="flex items-center justify-center space-x-2 w-2/4 ml-28">
       <div
         onMouseEnter={() => setHoveredIcon('home')}
         onMouseLeave={() => setHoveredIcon('')}
@@ -24,6 +25,23 @@ const MiddleHeader = () => {
         {hoveredIcon === 'home' && (
           <div className="bg-black rounded absolute top-16">
             <p className="text-white p-2 text-xs">Home</p>
+          </div>
+        )}
+      </div>
+      <div
+        onMouseEnter={() => setHoveredIcon('friends')}
+        onMouseLeave={() => setHoveredIcon('')}
+        onClick={() => setActiveIcon('friends')}
+        className={`flex items-center justify-center w-3/12 cursor-pointer ${
+          activeIcon === 'friends'
+            ? 'border-b-4 border-blue-600 py-3'
+            : 'border-b-4 border-transparent hover:bg-customBg-100 hover:rounded py-2'
+        }`}
+      >
+        <PeopleIcon sx={{ fontSize: 28 }} />
+        {hoveredIcon === 'friends' && (
+          <div className="bg-black rounded absolute top-16">
+            <p className="text-white p-2 text-xs">Friends</p>
           </div>
         )}
       </div>

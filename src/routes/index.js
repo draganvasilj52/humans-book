@@ -1,42 +1,29 @@
 import { useRoutes } from 'react-router-dom'
-import SignIn from '../pages/SignIn/SignIn'
-import MainContent from '../containers/MainContent'
-import Header from '../containers/Header'
 import { useSelector } from 'react-redux'
+import ProfilePage from '../pages/ProfilePage'
+import HomePage from '../pages/HomePage'
+import Bookmarks from './../pages/Bookmarks/index'
+import SignInMobileFirst from '../pages/SignIn/SingInMobileFirst'
 
 export default function Router() {
   const user = useSelector((state) => state.data.user)
-  console.log(user)
+
   const routes = [
     {
       path: '/',
-      element: user ? (
-        <>
-          <Header /> <MainContent />
-        </>
-      ) : (
-        <SignIn />
-      ),
+      element: user ? <HomePage /> : <SignInMobileFirst />,
     },
     {
-      path: '/home',
-      element: 'dsad',
+      path: user && `/${user.displayName}`,
+      element: user ? <ProfilePage /> : <SignInMobileFirst />,
     },
     {
-      path: '/media',
-      element: 'dsa',
-    },
-    {
-      path: '/games',
-      element: 'dsa',
-    },
-    {
-      path: '/groups',
-      element: 'dsa',
+      path: '/bookmarks',
+      element: user ? <Bookmarks /> : <SignInMobileFirst />,
     },
     {
       path: '*',
-      element: <SignIn />,
+      element: <SignInMobileFirst />,
     },
   ]
   return useRoutes(routes)

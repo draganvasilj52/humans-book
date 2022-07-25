@@ -3,34 +3,87 @@ import { useState } from 'react'
 import { signupUser } from '../../services/AuthService'
 import { useDispatch } from 'react-redux'
 import { logUser } from '../../features/dataSlice'
+import { authentication } from '../../firebase/config'
+import { updateProfile } from 'firebase/auth'
+import { setDoc } from 'firebase/firestore'
+import { db } from '../../firebase/config'
+import { doc } from 'firebase/firestore'
 
 const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
+  const [enterName, setEnterName] = useState('')
   const [enterEmail, setEnterEmail] = useState('')
   const [enterPassword, setEnterPassword] = useState('')
+  const [error, setError] = useState('')
 
   const dispatch = useDispatch()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const newUser = await signupUser(enterEmail, enterPassword)
-    dispatch(logUser(newUser.user.email))
+    try {
+      if (enterPassword === '' || enterEmail === '') {
+        setError('Enter Credentials')
+        return
+      }
+      const newUser = await signupUser(enterEmail, enterPassword)
+      await updateProfile(authentication.currentUser, {
+        displayName: enterName,
+        photoURL:
+          'https://images.unsplash.com/photo-1542309667-2a115d1f54c6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=736&q=80',
+      })
+
+      const userCredentials = { ...newUser.user }
+
+      const dispatchedData = {
+        email: userCredentials.email,
+        photoURL: userCredentials.photoURL,
+        id: userCredentials.uid,
+        displayName: userCredentials.displayName,
+        posts: [],
+      }
+
+      dispatch(logUser(dispatchedData))
+      await setDoc(doc(db, 'users', `${userCredentials.uid}`), dispatchedData)
+    } catch (error) {
+      setError('Invalid Credentials')
+    }
+  }
+
+  const handleNameInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
+    setEnterName(e.target.value)
+  }
+
+  const handleEmailInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
+    setEnterEmail(e.target.value)
+  }
+
+  const handlePasswordInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
+    setEnterPassword(e.target.value)
   }
   return (
     <div
-      id="authentication-modal"
-      tabIndex="-1"
-      aria-hidden="true"
+      // id="authentication-modal"
+      //  tabIndex="-1"
+      //   aria-hidden="true"
       className={` ${
         createNewAccount ? '' : 'hidden'
-      } bg-opacity-50 bg-white flex items-center justify-center h-screen overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full`}
+      } bg-opacity-50 bg-white flex items-center justify-center overflow-y-auto overflow-x-hidden fixed top-0 bottom-8 right-0 left-0 z-50 w-full md:inset-0`}
     >
-      <div className="relative p-4 w-full max-w-md h-full md:h-auto">
+      <div className="relative p-4 w-full max-w-md  md:h-auto">
         <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
           <button
             onClick={() => setCreateNewAccount(false)}
             type="button"
             className=" absolute top-1 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
-            data-modal-toggle="authentication-modal"
+            //  data-modal-toggle="authentication-modal"
           >
             <svg
               className="w-5 h-5"
@@ -57,6 +110,25 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="email"
+                  id="email"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Enter first name"
+                  // required
+                  value={enterName}
+                  onChange={handleNameInput}
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
                   Your email
                 </label>
                 <input
@@ -65,9 +137,9 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   placeholder="Enter e-mail"
-                  required
+                  // required
                   value={enterEmail}
-                  onChange={(e) => setEnterEmail(e.target.value)}
+                  onChange={handleEmailInput}
                 />
               </div>
               <div>
@@ -83,9 +155,9 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   id="password"
                   placeholder="Enter Password"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  required
+                  //  required
                   value={enterPassword}
-                  onChange={(e) => setEnterPassword(e.target.value)}
+                  onChange={handlePasswordInput}
                 />
               </div>
 
@@ -95,6 +167,7 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
               >
                 Sign Up
               </button>
+              {error && <p className="text-red-500 text-center">{error}</p>}
             </form>
           </div>
         </div>

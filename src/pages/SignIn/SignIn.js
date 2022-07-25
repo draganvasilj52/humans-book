@@ -3,6 +3,8 @@ import { useState } from 'react'
 import { logUser } from '../../features/dataSlice'
 import { useDispatch } from 'react-redux'
 import SignUpV2 from './../SignUp/SignUpV2'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { db } from '../../firebase/config'
 
 const SignIn = () => {
   const [email, setEmail] = useState('')
@@ -21,7 +23,28 @@ const SignIn = () => {
         return
       }
       const user = await loginUser(email, password)
-      dispatch(logUser(user.user.email))
+      const userCredentials = { ...user.user }
+
+      const loggedUserId = userCredentials.uid
+
+      const q = query(
+        collection(db, 'users'),
+        where('id', '==', `${loggedUserId}`)
+      )
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        let evander = {}
+        querySnapshot.forEach((doc) => {
+          evander = { ...doc.data() }
+        })
+        const dispatchedData = {
+          email: evander.email,
+          photoURL: evander.photoURL,
+          id: loggedUserId,
+          displayName: evander.displayName,
+          posts: evander.posts,
+        }
+        dispatch(logUser(dispatchedData))
+      })
     } catch (error) {
       setError('Invalid Credentials')
     }
@@ -42,52 +65,58 @@ const SignIn = () => {
   }
 
   return (
-    <>
-      <div className="flex flex-col justify-center items-center h-screen">
-        <p className="font-bold text-blue-600 pb-1">Humans Book</p>
-
-        <div className="w-1/3 flex flex-col p-3.5 rounded bg-white">
-          <form
-            onSubmit={handleLogin}
-            className=" flex flex-col border-b border-solid pb-4 space-y-3"
-          >
-            <input
-              className="border border-solid rounded p-2.5"
-              onChange={handleEmailInput}
-              value={email}
-              placeholder="E-mail adress"
-              type="email"
-            />
-
-            <input
-              className="border border-solid rounded p-2.5"
-              onChange={handlePasswordInput}
-              value={password}
-              placeholder="Password"
-              type="password"
-            />
-            <button
-              type="submit"
-              className=" bg-blue-600 font-bold text-white px-4 py-2 rounded"
-              onClick={handleLogin}
-            >
-              Log in
-            </button>
-            {error && <p className="text-red-500 text-center">{error}</p>}
-          </form>
-          <div
-            onClick={() => setCreateNewAccount(true)}
-            className="font-bold bg-green-500 text-white p-2 text-center rounded mx-8 mt-5 mb-2 cursor-pointer"
-          >
-            Create New Account
-          </div>
-        </div>
+    <div className="flex items-center justify-center pt-20 pb-28 mx-24">
+      <div className="flex flex-col w-3/5">
+        <p className="font-bold text-blue-600 pb-1 text-5xl  pb-4 ">
+          humans book
+        </p>
+        <p className="text-2xl pb-5 w-4/5">
+          Humans Book connects you with other people and makes exchanging
+          informations easier.
+        </p>
       </div>
-      <SignUpV2
-        createNewAccount={createNewAccount}
-        setCreateNewAccount={setCreateNewAccount}
-      />
-    </>
+
+      <div className="flex flex-col p-3.5 rounded bg-white w-2/5">
+        <form
+          onSubmit={handleLogin}
+          className=" flex flex-col border-b border-solid pb-4 space-y-3"
+        >
+          <input
+            className="border border-solid rounded p-2.5"
+            onChange={handleEmailInput}
+            value={email}
+            placeholder="E-mail adress"
+            type="email"
+          />
+
+          <input
+            className="border border-solid rounded p-2.5"
+            onChange={handlePasswordInput}
+            value={password}
+            placeholder="Password"
+            type="password"
+          />
+          <button
+            type="submit"
+            className=" bg-blue-600 font-bold text-white px-4 py-2 rounded"
+            onClick={handleLogin}
+          >
+            Log in
+          </button>
+          {error && <p className="text-red-500 text-center">{error}</p>}
+        </form>
+        <div
+          onClick={() => setCreateNewAccount(true)}
+          className="font-bold bg-green-500 text-white p-2 text-center rounded mx-8 mt-5 mb-2 cursor-pointer"
+        >
+          Create New Account
+        </div>
+        <SignUpV2
+          createNewAccount={createNewAccount}
+          setCreateNewAccount={setCreateNewAccount}
+        />
+      </div>
+    </div>
   )
 }
 

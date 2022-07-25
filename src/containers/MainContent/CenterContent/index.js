@@ -1,9 +1,10 @@
-import React from 'react'
-import PostList from "../../../components/PostsList/PostList";
+import PostList from '../../../components/PostsList/PostList'
+import PostCreate from '../../../components/PostCreate/PostCreate'
 
 const CenterContent = () => {
   return (
-    <div className="px-8">
+    <div className="px-8 space-y-4">
+      <PostCreate />
       <PostList />
     </div>
   )
