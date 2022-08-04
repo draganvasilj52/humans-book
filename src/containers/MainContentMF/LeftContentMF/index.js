@@ -7,7 +7,7 @@ const LeftContentMF = () => {
   const navigate = useNavigate()
   const user = useSelector((state) => state.data.user)
   return (
-    <div className=" flex flex-col space-y-1 ">
+    <div className=" flex flex-col space-y-1 pl-2">
       <div
         onClick={() => navigate(`/${user.displayName}`)}
         className="flex items-center p-2 w-full cursor-pointer hover:bg-zinc-200 hover:rounded"
