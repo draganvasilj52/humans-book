@@ -9,7 +9,7 @@ module.exports = {
         272: '17rem',
         304: '19rem',
       },
-      width: { 980: '61.25rem', 400: '25rem', 500: '31.25rem' },
+      width: { 980: '61.25rem', 400: '25rem', 500: '31.25rem', 328: '20.5rem' },
       colors: {
         customBg: {
           100: '#F0F2F5',
