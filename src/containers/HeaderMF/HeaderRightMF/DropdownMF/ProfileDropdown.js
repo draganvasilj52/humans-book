@@ -1,8 +1,7 @@
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux/es/exports'
-import { logOutUser } from '../../../../features/dataSlice'
-import { signOutUser } from './../../../../services/AuthService'
+import { logOut } from '../../../../features/dataSlice'
 import SettingsIcon from '@mui/icons-material/Settings'
 import HelpIcon from '@mui/icons-material/Help'
 import { useNavigate } from 'react-router-dom'
@@ -14,10 +13,7 @@ const ProfileDropdown = () => {
 
   const dispatch = useDispatch()
 
-  const handleClick = async () => {
-    await signOutUser()
-    dispatch(logOutUser())
-  }
+  const handleClick = async () => {}
 
   return (
     <div
@@ -71,7 +67,12 @@ const ProfileDropdown = () => {
         >
           <LogoutIcon sx={{ fontSize: 20 }} />
         </div>
-        <p className="text-base font-medium text-black ">Sign out</p>
+        <p
+          onClick={() => dispatch(logOut())}
+          className="text-base font-medium text-black "
+        >
+          Sign out
+        </p>
       </div>
     </div>
   )

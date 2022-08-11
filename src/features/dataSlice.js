@@ -1,9 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { authentication } from '../firebase/config'
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth'
+import { db } from '../firebase/config'
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore'
 
 const initialState = {
-  user: localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user'))
-    : null,
+  user: null,
   messengerArray: [],
 }
 
@@ -11,23 +17,6 @@ const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
-    logUser(state, action) {
-      let userData = action.payload
-      let loggedUser = {
-        email: userData.email,
-        photoURL: userData.photoURL,
-        id: userData.id,
-        displayName: userData.displayName,
-        posts: userData.posts,
-        coverPhoto: userData.coverPhoto,
-      }
-      state.user = loggedUser
-      localStorage.setItem('user', JSON.stringify(state.user))
-    },
-    logOutUser(state) {
-      state.user = null
-      window.localStorage.removeItem('user')
-    },
     addPeopleToMessengerArray(state, action) {
       let user = action.payload
       let newArray = [...state.messengerArray]
@@ -64,11 +53,92 @@ const dataSlice = createSlice({
       state.messengerArray = newArray
     },
   },
+
+  extraReducers(builder) {
+    builder
+      .addCase(createUser.fulfilled, (state, action) => {
+        state.user = action.payload
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.user = action.payload
+      })
+      .addCase(logOut.fulfilled, (state) => {
+        state.user = null
+      })
+  },
+})
+
+export const createUser = createAsyncThunk(
+  'user/createUser',
+  async (data, thunkAPI) => {
+    let resp = await createUserWithEmailAndPassword(
+      authentication,
+      data.enterEmail,
+      data.enterPassword
+    )
+
+    const uid = authentication.currentUser.uid
+
+    const user = {
+      id: uid,
+      email: resp.user.email,
+      displayName: 'person',
+      posts: [],
+      coverPhoto: '',
+      photoURL:
+        'https://images.unsplash.com/photo-1633675254053-d96c7668c3b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80',
+    }
+
+    await setDoc(doc(db, 'users', `${uid}`), user)
+
+    return { ...user }
+  }
+)
+
+export const loginUser = createAsyncThunk(
+  'user/loginUser',
+  async (data, thunkAPI) => {
+    await signInWithEmailAndPassword(
+      authentication,
+      data.enterEmail,
+      data.enterPassword
+    )
+
+    thunkAPI.dispatch(getUser())
+  }
+)
+
+export const getUser = createAsyncThunk('user/getUser', async (_, thunkAPI) => {
+  let userData
+
+  const uid = authentication.currentUser.uid
+
+  const docRef = doc(db, 'users', `${uid}`)
+  const docSnap = await getDoc(docRef)
+
+  userData = { id: docSnap.id, ...docSnap.data() }
+
+  return { ...userData }
+})
+
+export const setUserData = createAsyncThunk(
+  'user/setUserData',
+  async (enterName, thunkAPI) => {
+    const uid = authentication.currentUser.uid
+
+    await updateDoc(doc(db, 'users', uid), {
+      name: enterName,
+    })
+
+    thunkAPI.dispatch(getUser())
+  }
+)
+
+export const logOut = createAsyncThunk('user/logOutUser', async () => {
+  await signOut(authentication)
 })
 
 export const {
-  logUser,
-  logOutUser,
   addPeopleToMessengerArray,
   removePeopleFromMessengerArray,
   changeIndexInMessengerArray,
