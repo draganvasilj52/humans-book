@@ -20,6 +20,7 @@ const UsersList = () => {
 
   return (
     <div className="flex flex-col">
+      <p className="text-base	font-semibold	pb-3 px-2	text-center">ALL USERS</p>
       {data.map((item, index) => (
         <UsersListItem item={item} key={index} />
       ))}

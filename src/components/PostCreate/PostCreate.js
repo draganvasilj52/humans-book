@@ -11,8 +11,8 @@ const PostCreate = () => {
   const user = useSelector((state) => state.data.user)
 
   return (
-    <div className="flex flex-col px-4 pt-3 pb-2.5 bg-white rounded">
-      <div className="flex items-center space-x-4 mb-3">
+    <div className="flex flex-col px-4 h-32 pt-3 pb-2.5 bg-white rounded">
+      <div className="flex h-full items-center space-x-4 mb-3">
         <div
           className="h-10 w-10 bg-cover"
           style={{

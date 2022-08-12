@@ -1,23 +1,21 @@
 import React from 'react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { createUser } from '../../features/dataSlice'
 
 const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const [enterEmail, setEnterEmail] = useState('')
   const [enterPassword, setEnterPassword] = useState('')
+  const [enterFirstName, setEnterFirstName] = useState('')
+  const [enterLastName, setEnterLastName] = useState('')
 
   const dispatch = useDispatch()
-
-  const user = useSelector((state) => state.data.user)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    let data = { enterEmail, enterPassword }
+    let data = { enterEmail, enterPassword, enterFirstName, enterLastName }
     dispatch(createUser(data))
-
-    console.log(user)
   }
 
   const handleEmailInput = (e) => {
@@ -26,6 +24,14 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
 
   const handlePasswordInput = (e) => {
     setEnterPassword(e.target.value)
+  }
+
+  const handleFirstNameInput = (e) => {
+    setEnterFirstName(e.target.value)
+  }
+
+  const handleLastNameInput = (e) => {
+    setEnterLastName(e.target.value)
   }
   return (
     <div
@@ -69,7 +75,37 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   htmlFor="email"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  Your email
+                  Your First Name
+                </label>
+                <input
+                  type="text"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Enter First Name"
+                  value={enterFirstName}
+                  onChange={handleFirstNameInput}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Your Last Name
+                </label>
+                <input
+                  type="text"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
+                  placeholder="Enter Last Name"
+                  value={enterLastName}
+                  onChange={handleLastNameInput}
+                />
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                >
+                  Your Email
                 </label>
                 <input
                   type="email"
@@ -77,7 +113,6 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   id="email"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
                   placeholder="Enter e-mail"
-                  // required
                   value={enterEmail}
                   onChange={handleEmailInput}
                 />
@@ -87,7 +122,7 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   htmlFor="password"
                   className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  Your password
+                  Your Password
                 </label>
                 <input
                   type="password"

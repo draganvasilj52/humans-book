@@ -4,7 +4,9 @@ import MainContentMF from './../../containers/MainContentMF/index'
 const HomePage = () => {
   return (
     <>
-      <HeaderMF /> <MainContentMF />
+      <HeaderMF />
+
+      <MainContentMF />
     </>
   )
 }

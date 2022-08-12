@@ -7,7 +7,6 @@ import SignInMobileFirst from '../pages/SignIn/SingInMobileFirst'
 
 export default function Router() {
   const user = useSelector((state) => state.data.user)
-  console.log(user)
 
   const routes = [
     {

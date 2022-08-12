@@ -17,6 +17,9 @@ const dataSlice = createSlice({
   name: 'data',
   initialState,
   reducers: {
+    updateLatestDataToLoggedUser(state, action) {
+      state.user = action.payload
+    },
     addPeopleToMessengerArray(state, action) {
       let user = action.payload
       let newArray = [...state.messengerArray]
@@ -81,9 +84,12 @@ export const createUser = createAsyncThunk(
 
     const user = {
       id: uid,
+      firstName: data.enterFirstName,
+      lastName: data.enterLastName,
       email: resp.user.email,
-      displayName: 'person',
+      displayName: data.enterFirstName,
       posts: [],
+      friendsArray: [],
       coverPhoto: '',
       photoURL:
         'https://images.unsplash.com/photo-1633675254053-d96c7668c3b8?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80',
@@ -113,10 +119,10 @@ export const getUser = createAsyncThunk('user/getUser', async (_, thunkAPI) => {
 
   const uid = authentication.currentUser.uid
 
-  const docRef = doc(db, 'users', `${uid}`)
+  const docRef = doc(db, 'users', uid)
   const docSnap = await getDoc(docRef)
 
-  userData = { id: docSnap.id, ...docSnap.data() }
+  userData = { id: uid, ...docSnap.data() }
 
   return { ...userData }
 })
@@ -142,6 +148,7 @@ export const {
   addPeopleToMessengerArray,
   removePeopleFromMessengerArray,
   changeIndexInMessengerArray,
+  updateLatestDataToLoggedUser,
 } = dataSlice.actions
 
 export default dataSlice.reducer
