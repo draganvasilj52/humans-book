@@ -69,20 +69,27 @@ const Dropzone = ({
       timestamp: serverTimestamp(),
       userId: user.id,
       likes: 0,
+      docRef: '',
       comments: [],
+      photoURL: user.photoURL,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      peopleWhoLiked: [],
     })
-    await Promise.all(
-      selectedImages.map((image) => {
-        const filePath = `postImages/${docRef.id}/${image.name}`
-        const storageRef = ref(storage, filePath)
-        uploadBytes(storageRef, image, 'data_url').then(async () => {
-          const photoURL = await getDownloadURL(ref(storage, filePath))
-          await updateDoc(doc(db, 'posts', docRef.id), {
-            images: arrayUnion(photoURL),
-          })
+    await updateDoc(doc(db, 'posts', docRef.id), {
+      docRef: docRef.id,
+    })
+
+    selectedImages.forEach((image) => {
+      const filePath = `postImages/${docRef.id}/${image.name}`
+      const storageRef = ref(storage, filePath)
+      uploadBytes(storageRef, image, 'data_url').then(async () => {
+        const photoURL = await getDownloadURL(ref(storage, filePath))
+        await updateDoc(doc(db, 'posts', docRef.id), {
+          images: arrayUnion(photoURL),
         })
       })
-    )
+    })
 
     inputTextRef.current.value = ''
     setSelectedImages([])

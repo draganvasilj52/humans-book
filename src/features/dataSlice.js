@@ -9,7 +9,9 @@ import { db } from '../firebase/config'
 import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore'
 
 const initialState = {
-  user: null,
+  user: localStorage.getItem('user')
+    ? JSON.parse(localStorage.getItem('user'))
+    : null,
   messengerArray: [],
 }
 
@@ -61,12 +63,15 @@ const dataSlice = createSlice({
     builder
       .addCase(createUser.fulfilled, (state, action) => {
         state.user = action.payload
+        localStorage.setItem('user', JSON.stringify(action.payload))
       })
       .addCase(getUser.fulfilled, (state, action) => {
         state.user = action.payload
+        localStorage.setItem('user', JSON.stringify(action.payload))
       })
       .addCase(logOut.fulfilled, (state) => {
         state.user = null
+        localStorage.removeItem('user')
       })
   },
 })
