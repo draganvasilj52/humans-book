@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import {
   addPeopleToMessengerArray,
@@ -11,12 +11,16 @@ const UsersListItem = ({ item }) => {
     dispatch(addPeopleToMessengerArray(item))
   }
 
+  const user = useSelector((state) => state.data.user)
+
   const [showFriendsModal, setShowFriendsModal] = useState(false)
 
   const handleAddFriends = async () => {
-    await addFriend(item.id)
-    let updatedUser = await updateUserInReduxStore()
-    dispatch(updateLatestDataToLoggedUser(updatedUser))
+    if (item.id !== user.id) {
+      await addFriend(item.id)
+      let updatedUser = await updateUserInReduxStore()
+      dispatch(updateLatestDataToLoggedUser(updatedUser))
+    }
   }
 
   return (
@@ -36,7 +40,7 @@ const UsersListItem = ({ item }) => {
       <p className="text-base	py-3.5">
         {item.firstName} {item.lastName}
       </p>
-      {showFriendsModal && (
+      {showFriendsModal && item.id !== user.id && (
         <div className="absolute z-20 left-20 p-3 rounded bg-white space-y-2 flex flex-col items-center justify-center group cursor-default">
           <div className="flex items-center justify-center space-x-2">
             <div

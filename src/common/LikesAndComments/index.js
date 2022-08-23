@@ -17,6 +17,10 @@ const LikesAndComments = ({ item }) => {
     (x) => x === user.id
   )
 
+  /*  const canPostBeLikedAndCommented = user.friendsArray.findIndex(
+    (x) => x === item.userId
+  ) */
+
   const [showCommentsSection, setShowCommentsSection] = useState(false)
   const [likes, setLikes] = useState([])
 

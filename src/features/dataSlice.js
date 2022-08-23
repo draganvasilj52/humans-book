@@ -21,6 +21,7 @@ const dataSlice = createSlice({
   reducers: {
     updateLatestDataToLoggedUser(state, action) {
       state.user = action.payload
+      localStorage.setItem('user', JSON.stringify(action.payload))
     },
     addPeopleToMessengerArray(state, action) {
       let user = action.payload
