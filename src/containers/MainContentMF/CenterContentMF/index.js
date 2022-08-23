@@ -1,13 +1,7 @@
 import PostList from '../../../components/PostsList/PostList'
 import PostCreate from '../../../components/PostCreate/PostCreate'
-import { useState, useEffect, useCallback } from 'react'
-import {
-  onSnapshot,
-  collection,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore'
+import { useState, useEffect } from 'react'
+import { onSnapshot, collection, orderBy, query } from 'firebase/firestore'
 import { db } from './../../../firebase/config'
 import { useSelector } from 'react-redux'
 

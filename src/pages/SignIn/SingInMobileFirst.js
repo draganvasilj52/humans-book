@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { loginUser } from '../../features/dataSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import SignUpV2 from './../SignUp/SignUpV2'
 
 import Footer from '../../containers/Footer'
@@ -13,19 +13,18 @@ const SignIn = () => {
 
   const dispatch = useDispatch()
 
+  const err = useSelector((state) => state.data.error)
+
   const handleLogin = async (e) => {
     e.preventDefault()
 
-    try {
-      if (enterPassword === '' || enterEmail === '') {
-        setError('Enter Credentials')
-        return
-      }
-      const data = { enterEmail, enterPassword }
-      dispatch(loginUser(data))
-    } catch (error) {
-      setError('Invalid Credentials')
+    if (enterPassword === '' || enterEmail === '') {
+      setError('Enter Credentials')
+      return
     }
+
+    const data = { enterEmail, enterPassword }
+    dispatch(loginUser(data))
   }
 
   const handleEmailInput = (e) => {
@@ -84,6 +83,7 @@ const SignIn = () => {
                   Log in
                 </button>
                 {error && <p className="text-red-500 text-center">{error}</p>}
+                {err && <p className="text-red-500 text-center">{err}</p>}
                 <p className="text-sm text-center text-blue-600 hover:underline">
                   Forgot Password?
                 </p>

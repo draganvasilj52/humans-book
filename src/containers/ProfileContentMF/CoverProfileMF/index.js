@@ -6,8 +6,6 @@ import { storage } from '../../../firebase/config'
 import { useSelector } from 'react-redux'
 import { updateDoc, doc } from 'firebase/firestore'
 import { db } from '../../../firebase/config'
-import { collection, query, where, onSnapshot } from 'firebase/firestore'
-import { useDispatch } from 'react-redux'
 
 const CoverProfileMF = () => {
   const imageRef = useRef()
@@ -15,8 +13,8 @@ const CoverProfileMF = () => {
   const refHandler = () => {
     imageRef.current.click()
   }
+
   const user = useSelector((state) => state.data.user)
-  const dispatch = useDispatch()
 
   const handleCoverPhotoChange = async (e) => {
     if (e.target.files) {
@@ -28,21 +26,6 @@ const CoverProfileMF = () => {
         coverPhoto: coverURL,
       })
     }
-    const q = query(collection(db, 'users'), where('id', '==', `${user.id}`))
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      let evander = {}
-      querySnapshot.forEach((doc) => {
-        evander = { ...doc.data() }
-      })
-      const dispatchedData = {
-        email: evander.email,
-        photoURL: evander.photoURL,
-        id: user.id,
-        displayName: evander.displayName,
-        posts: evander.posts,
-        coverPhoto: evander.coverPhoto,
-      }
-    })
   }
   return (
     <div

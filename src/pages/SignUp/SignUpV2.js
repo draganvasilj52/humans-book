@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createUser } from '../../features/dataSlice'
 
 const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
@@ -8,29 +8,49 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const [enterPassword, setEnterPassword] = useState('')
   const [enterFirstName, setEnterFirstName] = useState('')
   const [enterLastName, setEnterLastName] = useState('')
+  const [error, setError] = useState('')
 
   const dispatch = useDispatch()
 
+  const err = useSelector((state) => state.data.error)
+
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    if (enterPassword === '' || enterEmail === '') {
+      setError('Enter Credentials')
+      return
+    }
 
     let data = { enterEmail, enterPassword, enterFirstName, enterLastName }
     dispatch(createUser(data))
   }
 
   const handleEmailInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
     setEnterEmail(e.target.value)
   }
 
   const handlePasswordInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
     setEnterPassword(e.target.value)
   }
 
   const handleFirstNameInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
     setEnterFirstName(e.target.value)
   }
 
   const handleLastNameInput = (e) => {
+    if (e.target.value !== '') {
+      setError('')
+    }
     setEnterLastName(e.target.value)
   }
   return (
@@ -135,6 +155,9 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
                   onChange={handlePasswordInput}
                 />
               </div>
+
+              {error && <p className="text-red-500 text-center">{error}</p>}
+              {err && <p className="text-red-500 text-center">{err}</p>}
 
               <button
                 type="submit"

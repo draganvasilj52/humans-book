@@ -13,6 +13,7 @@ const initialState = {
     ? JSON.parse(localStorage.getItem('user'))
     : null,
   messengerArray: [],
+  error: null,
 }
 
 const dataSlice = createSlice({
@@ -73,6 +74,12 @@ const dataSlice = createSlice({
       .addCase(logOut.fulfilled, (state) => {
         state.user = null
         localStorage.removeItem('user')
+      })
+      .addCase(loginUser.rejected, (state) => {
+        state.error = 'Invalid Credentials'
+      })
+      .addCase(createUser.rejected, (state) => {
+        state.error = 'User Already Exists'
       })
   },
 })
