@@ -7,6 +7,7 @@ import {
 import { addFriend, updateUserInReduxStore } from '../../services/AuthService'
 const UsersListItem = ({ item }) => {
   const dispatch = useDispatch()
+
   const addModalToArray = () => {
     dispatch(addPeopleToMessengerArray(item))
   }

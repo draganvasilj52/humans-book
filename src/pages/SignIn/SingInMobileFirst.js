@@ -58,7 +58,7 @@ const SignIn = () => {
             <div className="flex flex-col p-3.5 signInBreakpoint900:mr-0 signInBreakpoint1076:mx-auto rounded bg-white h-304 w-400 mx-auto my-0">
               <form
                 onSubmit={handleLogin}
-                className=" flex flex-col border-b border-solid h-315 pb-4 space-y-3"
+                className=" flex flex-col mt-3.5 border-b border-solid h-315 space-y-3"
               >
                 <input
                   className="border border-solid rounded p-2.5"
@@ -84,9 +84,6 @@ const SignIn = () => {
                 </button>
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 {err && <p className="text-red-500 text-center">{err}</p>}
-                <p className="text-sm text-center text-blue-600 hover:underline">
-                  Forgot Password?
-                </p>
               </form>
               <div
                 onClick={() => setCreateNewAccount(true)}

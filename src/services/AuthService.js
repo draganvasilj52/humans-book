@@ -70,3 +70,15 @@ export const unlikePost = async (docRef) => {
     peopleWhoLiked: arrayRemove(uid),
   })
 }
+
+export const addConversations = async (id, userWhoCreatedComment) => {
+  const uid = authentication.currentUser.uid
+
+  await updateDoc(doc(db, 'users', uid), {
+    conversations: arrayUnion(userWhoCreatedComment),
+  })
+
+  await updateDoc(doc(db, 'users', id), {
+    conversations: arrayUnion(userWhoCreatedComment),
+  })
+}

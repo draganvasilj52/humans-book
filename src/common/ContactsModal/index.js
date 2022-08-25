@@ -1,10 +1,28 @@
 import { removePeopleFromMessengerArray } from '../../features/dataSlice'
-import { useDispatch } from 'react-redux/es/exports'
-import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux/es/exports'
+import { useState, useRef } from 'react'
+import { addConversations } from '../../services/AuthService'
+import { getUser } from '../../features/dataSlice'
 
 const ContactsModal = ({ item, index }) => {
   const dispatch = useDispatch()
   const [iconHovered, setIconHovered] = useState(false)
+  const inputRef = useRef('')
+
+  const mess = useSelector((state) => state.data.messengerArray)
+
+  const handleKeyPress = async (event) => {
+    if (event.key === 'Enter') {
+      let enteredPhrase = inputRef.current.value
+      let userReciever = mess.find((x) => x.id === item.id)
+      let conversation = {
+        enteredPhrase,
+        userReciever,
+      }
+      await addConversations(item.id, conversation)
+      dispatch(getUser())
+    }
+  }
 
   return (
     <>
@@ -52,7 +70,12 @@ const ContactsModal = ({ item, index }) => {
             <div className="bg-white w-full h-full flex flex-col p-6">
               <div className="h-5/6"></div>
               <div className="h-2/12 ">
-                <input type="text" className="bg-gray-300 w-3/6 rounded-3xl" />
+                <input
+                  ref={inputRef}
+                  type="text"
+                  onKeyDown={handleKeyPress}
+                  className="bg-gray-300 w-3/6 rounded-3xl"
+                />
               </div>
             </div>
           </div>

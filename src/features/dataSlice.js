@@ -102,6 +102,7 @@ export const createUser = createAsyncThunk(
       email: resp.user.email,
       displayName: data.enterFirstName,
       posts: [],
+      conversations: [],
       friendsArray: [],
       coverPhoto: '',
       photoURL:
