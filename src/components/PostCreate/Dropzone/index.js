@@ -127,7 +127,7 @@ const Dropzone = ({
               {selected_images.length > 0 ? (
                 selected_images
               ) : (
-                <p>Add photos/videos</p>
+                <p>Add or drag/drop photos </p>
               )}
             </div>
           </div>

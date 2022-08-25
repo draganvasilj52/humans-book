@@ -13,8 +13,6 @@ const ProfileDropdown = () => {
 
   const dispatch = useDispatch()
 
-  const handleClick = async () => {}
-
   return (
     <div
       style={{ width: '40%' }}
@@ -58,7 +56,7 @@ const ProfileDropdown = () => {
         <p className="text-base font-medium text-black ">Help and support</p>
       </div>
       <div
-        onClick={handleClick}
+        onClick={() => dispatch(logOut())}
         className="flex p-2 hover:bg-customBg-100 hover:rounded items-center space-x-3 cursor-pointer"
       >
         <div
@@ -67,12 +65,7 @@ const ProfileDropdown = () => {
         >
           <LogoutIcon sx={{ fontSize: 20 }} />
         </div>
-        <p
-          onClick={() => dispatch(logOut())}
-          className="text-base font-medium text-black "
-        >
-          Sign out
-        </p>
+        <p className="text-base font-medium text-black w-full">Sign out</p>
       </div>
     </div>
   )
