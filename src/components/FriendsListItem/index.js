@@ -1,33 +1,39 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { addPeopleToMessengerArray } from '../../features/dataSlice'
 import { useState } from 'react'
-import { updateLatestDataToLoggedUser } from '../../features/dataSlice'
-import {
-  updateUserInReduxStore,
-  addFriendToPendingFriendsArray,
-} from '../../services/AuthService'
-const UsersListItem = ({ item }) => {
-  const dispatch = useDispatch()
+import { updateDoc, doc, arrayRemove } from 'firebase/firestore'
+import { db } from './../../firebase/config'
+import { updateUserInReduxStore } from './../../services/AuthService'
+import { updateLatestDataToLoggedUser } from './../../features/dataSlice'
 
+const FriendsListItem = ({ item }) => {
   const user = useSelector((state) => state.data.user)
-  console.log(user)
+  const [showFriendsModal, setShowFriendsModal] = useState(false)
+  const dispatch = useDispatch()
 
   const ifFriendsAlready = user.friendsArray.findIndex((x) => x === item.id)
 
-  const [showFriendsModal, setShowFriendsModal] = useState(false)
+  const addModalToArray = () => {
+    dispatch(addPeopleToMessengerArray(item))
+  }
 
-  const handleAddFriends = async (e) => {
-    e.stopPropagation()
-    if (item.id !== user.id) {
-      await addFriendToPendingFriendsArray(item.id)
-      let updatedUser = await updateUserInReduxStore()
-      dispatch(updateLatestDataToLoggedUser(updatedUser))
-    }
+  const removeFriend = async () => {
+    await updateDoc(doc(db, 'users', user.id), {
+      friendsArray: arrayRemove(item.id),
+    })
+    await updateDoc(doc(db, 'users', item.id), {
+      friendsArray: arrayRemove(user.id),
+    })
+
+    let updatedUser = await updateUserInReduxStore()
+    dispatch(updateLatestDataToLoggedUser(updatedUser))
   }
 
   return (
     <div
       onMouseEnter={() => setShowFriendsModal(true)}
       onMouseLeave={() => setShowFriendsModal(false)}
+      onClick={addModalToArray}
       className="px-2 space-x-3 flex items-center hover:bg-zinc-200 hover:rounded relative group cursor-pointer "
     >
       <div
@@ -55,12 +61,14 @@ const UsersListItem = ({ item }) => {
             </p>
           </div>
           {ifFriendsAlready !== -1 ? (
-            <p className="text-sm bg-blue-200 rounded p-1">Already friends</p>
-          ) : (
             <p
-              onClick={handleAddFriends}
-              className="text-sm bg-blue-200 rounded p-1 hover:cursor-pointer"
+              onClick={removeFriend}
+              className="text-sm bg-blue-200 rounded p-1 cursor-pointer"
             >
+              Remove Friend
+            </p>
+          ) : (
+            <p className="text-sm bg-blue-200 rounded p-1 cursor-pointer">
               Add Friend
             </p>
           )}
@@ -70,4 +78,4 @@ const UsersListItem = ({ item }) => {
   )
 }
 
-export default UsersListItem
+export default FriendsListItem

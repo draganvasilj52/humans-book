@@ -43,6 +43,14 @@ export const addFriend = async (id) => {
   })
 }
 
+export const addFriendToPendingFriendsArray = async (id) => {
+  const uid = authentication.currentUser.uid
+
+  await updateDoc(doc(db, 'users', id), {
+    pendingFriendsArray: arrayUnion(uid),
+  })
+}
+
 export const addComment = async (data, docRef) => {
   await updateDoc(doc(db, 'posts', docRef), {
     comments: arrayUnion(data),
