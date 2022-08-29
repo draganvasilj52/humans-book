@@ -5,50 +5,70 @@ import { updateUserInReduxStore } from '../../services/AuthService'
 import { updateLatestDataToLoggedUser } from '../../features/dataSlice'
 import { addFriend } from '../../services/AuthService'
 
-const PendingRequestFriendItem = ({ pendingUser }) => {
+const PendingRequestFriendItem = ({ sendingUser, sender }) => {
   const user = useSelector((state) => state.data.user)
+
   const dispatch = useDispatch()
 
   const handleAddingFriendToPendingArray = async () => {
-    await addFriend(pendingUser.id)
-    await updateDoc(doc(db, 'users', user.id), {
-      pendingFriendsArray: arrayRemove(pendingUser.id),
+    await addFriend(sendingUser.id)
+
+    await updateDoc(doc(db, 'users', sendingUser.id), {
+      pendingFriendsArray: arrayRemove({ id: user.id, pending: true }),
     })
+
+    await updateDoc(doc(db, 'users', user.id), {
+      pendingFriendsArray: arrayRemove({ id: sender.id, pending: false }),
+    })
+
     let updatedUser = await updateUserInReduxStore()
     dispatch(updateLatestDataToLoggedUser(updatedUser))
   }
   const handleRemovingFriendFromPendingArray = async () => {
+    await updateDoc(doc(db, 'users', sendingUser.id), {
+      pendingFriendsArray: arrayRemove({ id: user.id, pending: true }),
+    })
+
     await updateDoc(doc(db, 'users', user.id), {
-      pendingFriendsArray: arrayRemove(pendingUser.id),
+      pendingFriendsArray: arrayRemove({ id: sender.id, pending: false }),
     })
     let updatedUser = await updateUserInReduxStore()
     dispatch(updateLatestDataToLoggedUser(updatedUser))
   }
+  const chechkIfSender = user.pendingFriendsArray.findIndex(
+    (x) => x.pending === false
+  )
   return (
-    <div>
+    <div className="flex bg-gray-200 items-center space-x-2">
       <div
         className="h-9 w-9 bg-cover"
         style={{
-          backgroundImage: `url(${pendingUser.photoURL})`,
+          backgroundImage: `url(${sendingUser.photoURL})`,
           borderRadius: '50%',
         }}
       />
       <p>
-        {pendingUser.firstName} {pendingUser.lastName}
+        {sendingUser.firstName} {sendingUser.lastName}
       </p>
-      <p>Accept for friend?</p>
-      <button
-        onClick={handleAddingFriendToPendingArray}
-        className="bg-blue-200"
-      >
-        Yes
-      </button>
-      <button
-        onClick={handleRemovingFriendFromPendingArray}
-        className="bg-red-200"
-      >
-        No
-      </button>
+      {chechkIfSender !== -1 ? (
+        <>
+          <p>Accept for friend?</p>
+          <button
+            onClick={handleAddingFriendToPendingArray}
+            className="bg-blue-200"
+          >
+            Accept
+          </button>
+          <button
+            onClick={handleRemovingFriendFromPendingArray}
+            className="bg-red-200"
+          >
+            Decline
+          </button>{' '}
+        </>
+      ) : (
+        <p className="">Friend Request send</p>
+      )}
     </div>
   )
 }

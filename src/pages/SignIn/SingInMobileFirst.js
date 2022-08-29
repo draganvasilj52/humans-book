@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { loginUser } from '../../features/dataSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import SignUpV2 from './../SignUp/SignUpV2'
-
+import { resetError } from '../../features/dataSlice'
 import Footer from '../../containers/Footer'
 
 const SignIn = () => {
@@ -30,6 +30,7 @@ const SignIn = () => {
   const handleEmailInput = (e) => {
     if (e.target.value !== '') {
       setError('')
+      dispatch(resetError())
     }
     setEnterEmail(e.target.value)
   }
@@ -37,6 +38,7 @@ const SignIn = () => {
   const handlePasswordInput = (e) => {
     if (e.target.value !== '') {
       setError('')
+      dispatch(resetError())
     }
     setEnterPassword(e.target.value)
   }

@@ -20,8 +20,6 @@ const LeftContentMF = () => {
   const navigate = useNavigate()
   const user = useSelector((state) => state.data.user)
 
-  const friendsArray = useSelector((state) => state.data.user.friendsArray)
-
   const [friends, setFriends] = useState([])
   /* 
   const fetch = useCallback(async () => {
@@ -41,14 +39,13 @@ const LeftContentMF = () => {
     fetch()
   }, [fetch]) */
 
-  console.log(user.friendsArray)
   useEffect(() => {
     const collectionRef = collection(db, 'users')
 
     const q = query(
       collectionRef,
 
-      where('id', 'in', [...user.friendsArray, user.id])
+      where('id', '==', ...user.friendsArray, user.id)
     )
 
     onSnapshot(q, (snap) => {
@@ -64,7 +61,6 @@ const LeftContentMF = () => {
       setFriends(friends)
     })
   }, [user.friendsArray, user.id])
-  console.log(friends)
 
   return (
     <div className=" flex flex-col space-y-1 pl-2">

@@ -12,6 +12,9 @@ import CreateDropdown from './DropdownMF/CreateDropdown'
 
 const RightHeaderItem = ({ item, setClicked }) => {
   const [hovered, setHovered] = useState(false)
+  const pendingArray = useSelector(
+    (state) => state.data.user.pendingFriendsArray
+  )
   return (
     <div
       onClick={() => {
@@ -23,7 +26,7 @@ const RightHeaderItem = ({ item, setClicked }) => {
       onMouseEnter={() => setHovered(item.name)}
       onMouseLeave={() => setHovered('')}
       style={{ borderRadius: 50 }}
-      className={`${
+      className={`${item.name === 'notifications' && 'relative'} ${
         item.name === 'menu' && 'hidden headerBreakpoint1100:flex'
       } ${
         item.name === 'create' && 'headerBreakpoint1100:hidden'
@@ -38,6 +41,11 @@ const RightHeaderItem = ({ item, setClicked }) => {
         >
           <p className="text-white p-2 text-xs">{item.displayContent}</p>
         </div>
+      )}
+      {item.name === 'notifications' && pendingArray.length > 0 && (
+        <p className="bg-white rounded-3xl p-0.5 text-xs absolute top-6 left-7 text-red-600">
+          {pendingArray.length}
+        </p>
       )}
     </div>
   )

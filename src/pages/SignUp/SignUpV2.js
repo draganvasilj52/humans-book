@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createUser } from '../../features/dataSlice'
+import { resetError } from '../../features/dataSlice'
 
 const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const [enterEmail, setEnterEmail] = useState('')
@@ -29,6 +30,7 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const handleEmailInput = (e) => {
     if (e.target.value !== '') {
       setError('')
+      dispatch(resetError())
     }
     setEnterEmail(e.target.value)
   }
@@ -36,6 +38,7 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const handlePasswordInput = (e) => {
     if (e.target.value !== '') {
       setError('')
+      dispatch(resetError())
     }
     setEnterPassword(e.target.value)
   }
@@ -43,6 +46,7 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const handleFirstNameInput = (e) => {
     if (e.target.value !== '') {
       setError('')
+      dispatch(resetError())
     }
     setEnterFirstName(e.target.value)
   }
@@ -50,6 +54,7 @@ const SignUpV2 = ({ createNewAccount, setCreateNewAccount }) => {
   const handleLastNameInput = (e) => {
     if (e.target.value !== '') {
       setError('')
+      dispatch(resetError())
     }
     setEnterLastName(e.target.value)
   }

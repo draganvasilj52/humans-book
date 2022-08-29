@@ -47,7 +47,16 @@ export const addFriendToPendingFriendsArray = async (id) => {
   const uid = authentication.currentUser.uid
 
   await updateDoc(doc(db, 'users', id), {
-    pendingFriendsArray: arrayUnion(uid),
+    pendingFriendsArray: arrayUnion({
+      id: uid,
+      pending: false,
+    }),
+  })
+  await updateDoc(doc(db, 'users', uid), {
+    pendingFriendsArray: arrayUnion({
+      id,
+      pending: true,
+    }),
   })
 }
 

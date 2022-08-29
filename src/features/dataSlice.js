@@ -24,6 +24,9 @@ const dataSlice = createSlice({
       state.user = action.payload
       localStorage.setItem('user', JSON.stringify(action.payload))
     },
+    resetError(state, action) {
+      state.error = null
+    },
     addPeopleToMessengerArray(state, action) {
       let user = action.payload
       let newArray = [...state.messengerArray]
@@ -164,6 +167,7 @@ export const {
   removePeopleFromMessengerArray,
   changeIndexInMessengerArray,
   updateLatestDataToLoggedUser,
+  resetError,
 } = dataSlice.actions
 
 export default dataSlice.reducer

@@ -9,19 +9,25 @@ const UsersListItem = ({ item }) => {
   const dispatch = useDispatch()
 
   const user = useSelector((state) => state.data.user)
-  console.log(user)
 
   const ifFriendsAlready = user.friendsArray.findIndex((x) => x === item.id)
+
+  const ifFriendsInPendingArray = user.pendingFriendsArray.findIndex(
+    (x) => x.id === item.id
+  )
+
+  /*   const ifFriendsInPendingArrayIsPendingFalse = user.pendingFriendsArray.find(
+    (x) => x.id === item.id
+  ) */
 
   const [showFriendsModal, setShowFriendsModal] = useState(false)
 
   const handleAddFriends = async (e) => {
     e.stopPropagation()
-    if (item.id !== user.id) {
-      await addFriendToPendingFriendsArray(item.id)
-      let updatedUser = await updateUserInReduxStore()
-      dispatch(updateLatestDataToLoggedUser(updatedUser))
-    }
+
+    await addFriendToPendingFriendsArray(item.id)
+    let updatedUser = await updateUserInReduxStore()
+    dispatch(updateLatestDataToLoggedUser(updatedUser))
   }
 
   return (
@@ -56,6 +62,8 @@ const UsersListItem = ({ item }) => {
           </div>
           {ifFriendsAlready !== -1 ? (
             <p className="text-sm bg-blue-200 rounded p-1">Already friends</p>
+          ) : ifFriendsInPendingArray !== -1 ? (
+            <p className="text-sm bg-blue-200 rounded p-1">Friend Request</p>
           ) : (
             <p
               onClick={handleAddFriends}

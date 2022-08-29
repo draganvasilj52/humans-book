@@ -4,20 +4,23 @@ import { useEffect } from 'react'
 import { useState } from 'react'
 import PendingRequestFriendItem from '../PendingRequestFriendItem'
 
-const RenderPendingFriendRequests = ({ item }) => {
-  const [pendingUser, setPendingUser] = useState({})
-  console.log(pendingUser)
+const RenderPendingFriendRequests = ({ sender }) => {
+  const [sendingUser, setSendingUser] = useState({})
+  console.log(sender)
+
   useEffect(() => {
-    const unsub = onSnapshot(doc(db, 'users', item), (doc) => {
-      setPendingUser({
+    const unsub = onSnapshot(doc(db, 'users', sender.id), (doc) => {
+      setSendingUser({
         ...doc.data(),
         id: doc.id,
         timestamp: doc.data().timestamp?.toDate().getTime(),
       })
     })
     return unsub
-  }, [item])
-  return <PendingRequestFriendItem pendingUser={pendingUser} item={item} />
+  }, [sender.id])
+  console.log(sendingUser)
+
+  return <PendingRequestFriendItem sendingUser={sendingUser} sender={sender} />
 }
 
 export default RenderPendingFriendRequests

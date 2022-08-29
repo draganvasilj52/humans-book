@@ -17,7 +17,8 @@ const FriendsListItem = ({ item }) => {
     dispatch(addPeopleToMessengerArray(item))
   }
 
-  const removeFriend = async () => {
+  const removeFriend = async (e) => {
+    e.stopPropagation()
     await updateDoc(doc(db, 'users', user.id), {
       friendsArray: arrayRemove(item.id),
     })
