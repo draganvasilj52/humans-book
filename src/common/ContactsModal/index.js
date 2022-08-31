@@ -10,16 +10,15 @@ const ContactsModal = ({ item, index }) => {
   const inputRef = useRef('')
 
   const mess = useSelector((state) => state.data.messengerArray)
+  const user = useSelector((state) => state.data.user)
+  const msgSender = { ...user }
 
   const handleKeyPress = async (event) => {
     if (event.key === 'Enter') {
       let enteredPhrase = inputRef.current.value
       let userReciever = mess.find((x) => x.id === item.id)
-      let conversation = {
-        enteredPhrase,
-        userReciever,
-      }
-      await addConversations(item.id, conversation)
+      let conversation = [enteredPhrase, msgSender, msgSender]
+      await addConversations(item.id, ...conversation)
       dispatch(getUser())
     }
   }
@@ -88,7 +87,9 @@ const ContactsModal = ({ item, index }) => {
           aria-hidden="true"
           onMouseEnter={() => setIconHovered(true)}
           onMouseLeave={() => setIconHovered(false)}
-          className={`fixed ${index === 2 && ' right-0 bottom-8'}  `}
+          className={`fixed ${index === 2 && ' right-0 bottom-8'} ${
+            index === 3 && ' right-0 bottom-24'
+          } ${index === 4 && ' right-0 bottom-40'} `}
         >
           <div
             className="h-12 w-12 bg-cover"

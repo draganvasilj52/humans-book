@@ -21,31 +21,30 @@ const LeftContentMF = () => {
   const user = useSelector((state) => state.data.user)
 
   const [friends, setFriends] = useState([])
-  /* 
+
   const fetch = useCallback(async () => {
     let friends = []
     user.friendsArray?.forEach((item) => {
       onSnapshot(doc(db, 'users', item), (doc) => {
         let data = doc.data()
-        console.log(data)
+
         friends.push(data)
         setFriends(friends)
       })
     })
-    console.log(friends)
   }, [user.friendsArray])
 
   useEffect(() => {
     fetch()
-  }, [fetch]) */
+  }, [fetch])
 
-  useEffect(() => {
+  /*   useEffect(() => {
     const collectionRef = collection(db, 'users')
 
     const q = query(
       collectionRef,
 
-      where('id', '==', ...user.friendsArray, user.id)
+      where('id', '==', ...user.friendsArray)
     )
 
     onSnapshot(q, (snap) => {
@@ -57,10 +56,11 @@ const LeftContentMF = () => {
           timestamp: doc.data().timestamp?.toDate().getTime(),
         })
       })
-      friends = friends.filter((x) => x.id !== user.id)
+      //  friends = friends.filter((x) => x.id !== user.id)
       setFriends(friends)
     })
-  }, [user.friendsArray, user.id])
+  }, [user.friendsArray])
+  console.log(friends) */
 
   return (
     <div className=" flex flex-col space-y-1 pl-2">

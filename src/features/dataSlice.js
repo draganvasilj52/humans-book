@@ -24,7 +24,7 @@ const dataSlice = createSlice({
       state.user = action.payload
       localStorage.setItem('user', JSON.stringify(action.payload))
     },
-    resetError(state, action) {
+    resetError(state) {
       state.error = null
     },
     addPeopleToMessengerArray(state, action) {
@@ -32,8 +32,15 @@ const dataSlice = createSlice({
       let newArray = [...state.messengerArray]
 
       let existingUser = newArray.find((x) => x.id === user.id)
+
       if (!existingUser) {
-        newArray.push(user)
+        if (newArray.length < 2) {
+          newArray.push(user)
+        } else if (newArray.length >= 2) {
+          newArray.splice(2, 0, user)
+          const firstElement = newArray.splice(0, 1)[0]
+          newArray.splice(newArray.length, 0, firstElement)
+        }
       }
 
       state.messengerArray = newArray
