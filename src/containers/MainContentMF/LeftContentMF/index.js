@@ -3,64 +3,38 @@ import GroupsIcon from '@mui/icons-material/Groups'
 import LiveTvIcon from '@mui/icons-material/LiveTv'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import {
-  onSnapshot,
-  collection,
-  orderBy,
-  query,
-  doc,
-  where,
-} from 'firebase/firestore'
+import { onSnapshot, collection, query, where } from 'firebase/firestore'
 import { db } from '../../../firebase/config'
 import { useEffect } from 'react'
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import FriendsList from '../../../components/FriendsList'
 
 const LeftContentMF = () => {
   const navigate = useNavigate()
   const user = useSelector((state) => state.data.user)
-
   const [friends, setFriends] = useState([])
 
-  const fetch = useCallback(async () => {
-    let friends = []
-    user.friendsArray?.forEach((item) => {
-      onSnapshot(doc(db, 'users', item), (doc) => {
-        let data = doc.data()
-
-        friends.push(data)
-        setFriends(friends)
-      })
-    })
-  }, [user.friendsArray])
-
   useEffect(() => {
-    fetch()
-  }, [fetch])
-
-  /*   useEffect(() => {
     const collectionRef = collection(db, 'users')
 
     const q = query(
       collectionRef,
-
-      where('id', '==', ...user.friendsArray)
+      where('friendsArray', 'array-contains', user.id)
     )
 
-    onSnapshot(q, (snap) => {
-      let friends = []
+    const unsub = onSnapshot(q, (snap) => {
+      let arr = []
       snap.docs.forEach((doc) => {
-        friends.push({
+        arr.push({
           ...doc.data(),
           id: doc.id,
           timestamp: doc.data().timestamp?.toDate().getTime(),
         })
       })
-      //  friends = friends.filter((x) => x.id !== user.id)
-      setFriends(friends)
+      setFriends(arr)
     })
-  }, [user.friendsArray])
-  console.log(friends) */
+    return unsub
+  }, [user.friendsArray, user.id])
 
   return (
     <div className=" flex flex-col space-y-1 pl-2">

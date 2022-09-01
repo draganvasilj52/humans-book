@@ -47,32 +47,14 @@ const FriendsListItem = ({ item }) => {
       <p className="text-base	py-3.5">
         {item.firstName} {item.lastName}
       </p>
-      {showFriendsModal && item.id !== user.id && (
+      {showFriendsModal && ifFriendsAlready !== -1 && (
         <div className="absolute z-20 left-20 p-3 rounded bg-white space-y-2 flex flex-col items-center justify-center group cursor-default">
-          <div className="flex items-center justify-center space-x-2">
-            <div
-              className="h-9 w-9 bg-cover"
-              style={{
-                backgroundImage: `url(${item.photoURL})`,
-                borderRadius: '50%',
-              }}
-            />
-            <p className="text-base	py-3.5">
-              {item.firstName} {item.lastName}
-            </p>
-          </div>
-          {ifFriendsAlready !== -1 ? (
-            <p
-              onClick={removeFriend}
-              className="text-sm bg-blue-200 rounded p-1 cursor-pointer"
-            >
-              Remove Friend
-            </p>
-          ) : (
-            <p className="text-sm bg-blue-200 rounded p-1 cursor-pointer">
-              Add Friend
-            </p>
-          )}
+          <p
+            onClick={removeFriend}
+            className="text-sm bg-blue-200 rounded p-1 cursor-pointer"
+          >
+            Remove Friend
+          </p>
         </div>
       )}
     </div>
