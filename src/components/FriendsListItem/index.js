@@ -48,7 +48,7 @@ const FriendsListItem = ({ item }) => {
         {item.firstName} {item.lastName}
       </p>
       {showFriendsModal && ifFriendsAlready !== -1 && (
-        <div className="absolute z-20 left-20 p-3 rounded bg-white space-y-2 flex flex-col items-center justify-center group cursor-default">
+        <div className="absolute z-20 right-0 p-3 rounded bg-white space-y-2 flex flex-col items-center justify-center group cursor-default">
           <p
             onClick={removeFriend}
             className="text-sm bg-blue-200 rounded p-1 cursor-pointer"

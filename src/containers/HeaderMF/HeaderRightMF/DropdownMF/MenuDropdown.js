@@ -8,7 +8,7 @@ const MenuDropdown = () => {
   return (
     <div
       style={{ width: '50%' }}
-      className="bg-menuBg-100 rounded absolute right-4 top-14 z-10 bg-customBg-100 flex flex-col"
+      className="rounded absolute right-4 top-14 z-10 bg-customBg-100 flex flex-col"
     >
       <p className="text-2xl font-bold p-4">Menu</p>
       <div className="flex space-x-5 px-4 pb-4">
@@ -38,7 +38,7 @@ const MenuDropdown = () => {
           <p className="text-base font-medium text-gray-700 pb-2 px-2 pt-3">
             Entertainment
           </p>
-          <div className="flex px-2 hover:bg-customBg-100 cursor-pointer hover:rounded px-2">
+          <div className="flex px-2 hover:bg-customBg-100 cursor-pointer hover:rounded">
             <LiveTvIcon className="my-2.5 mr-3" sx={{ fontSize: 36 }} />
             <div className="flex flex-col py-3">
               <p className="text-sm text-gray-700 font-medium">Watch</p>

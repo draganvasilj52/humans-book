@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { onSnapshot, collection, query, orderBy } from 'firebase/firestore'
 import { db } from './../../../firebase/config'
 import { useSelector } from 'react-redux'
+import './minHeightDiv.css'
 
 const ContentProfileMF = () => {
   const [data, setData] = useState([])
@@ -27,7 +28,7 @@ const ContentProfileMF = () => {
   }, [user.id])
 
   return (
-    <div className="bg-customBg-100 ">
+    <div className="bg-customBg-100 min ">
       <div className="flex flex-col space-y-3 mx-auto max-w-2xl  mt-4">
         <PostCreate />
         <PostList data={data} />

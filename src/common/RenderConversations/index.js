@@ -1,18 +1,39 @@
+import { useSelector } from 'react-redux/es/exports'
 const RenderConversations = ({ item }) => {
+  const user = useSelector((state) => state.data.user)
+
   return (
-    <div className="flex bg-gray-200  items-center z-10 ">
-      <div
-        className="h-6 w-6 bg-cover"
-        style={{
-          backgroundImage: `url(${item.userReciever.photoURL})`,
-          borderRadius: '50%',
-        }}
-      />
-      <p>
-        {item.userReciever.firstName} {item.userReciever.lastName}
-      </p>
-      <p className="pl-4">{item.enteredPhrase}</p>
-    </div>
+    <>
+      {user.id === item.userRecieverId ? (
+        <div className="flex bg-gray-200  items-center z-10 ">
+          <div
+            className="h-6 w-6 bg-cover"
+            style={{
+              backgroundImage: `url(${item.userSenderPhotoUrl})`,
+              borderRadius: '50%',
+            }}
+          />
+          <p className="ml-4">
+            {item.userSenderFirstName} {item.userSenderLastName}
+          </p>
+          <p className="pl-4">{item.enteredPhrase}</p>
+        </div>
+      ) : (
+        <div className="flex bg-gray-200  items-center z-10 ">
+          <div
+            className="h-6 w-6 bg-cover"
+            style={{
+              backgroundImage: `url(${item.userRecieverPhotoUrl})`,
+              borderRadius: '50%',
+            }}
+          />
+          <p className="ml-4">
+            {item.userRecieverFirstName} {item.userRecieverLastName}
+          </p>
+          <p className="pl-4">{item.enteredPhrase}</p>
+        </div>
+      )}
+    </>
   )
 }
 

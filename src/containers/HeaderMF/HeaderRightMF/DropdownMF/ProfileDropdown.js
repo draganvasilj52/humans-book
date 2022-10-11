@@ -13,6 +13,11 @@ const ProfileDropdown = () => {
 
   const dispatch = useDispatch()
 
+  const handleLogout = () => {
+    dispatch(logOut())
+    navigate('/')
+  }
+
   return (
     <div
       style={{ width: '40%' }}
@@ -56,7 +61,7 @@ const ProfileDropdown = () => {
         <p className="text-base font-medium text-black ">Help and support</p>
       </div>
       <div
-        onClick={() => dispatch(logOut())}
+        onClick={handleLogout}
         className="flex p-2 hover:bg-customBg-100 hover:rounded items-center space-x-3 cursor-pointer"
       >
         <div

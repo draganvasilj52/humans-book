@@ -1,6 +1,6 @@
 const NavbarProfileMF = () => {
   return (
-    <div className="flex items-center h-14 mx-4 max-w-6xl mx-auto">
+    <div className="flex items-center h-14  max-w-6xl mx-auto">
       <p className="text-base	px-4 text-gray-600">Feed</p>
       <p className="text-base	px-4 text-gray-600">Informations</p>
       <p className="text-base	px-4 text-gray-600">Friends</p>

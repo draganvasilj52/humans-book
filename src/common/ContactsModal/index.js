@@ -17,8 +17,18 @@ const ContactsModal = ({ item, index }) => {
     if (event.key === 'Enter') {
       let enteredPhrase = inputRef.current.value
       let userReciever = mess.find((x) => x.id === item.id)
-      let conversation = [enteredPhrase, msgSender, msgSender]
-      await addConversations(item.id, ...conversation)
+      let conversation = {
+        enteredPhrase,
+        userRecieverId: userReciever.id,
+        userRecieverFirstName: userReciever.firstName,
+        userRecieverLastName: userReciever.lastName,
+        userRecieverPhotoUrl: userReciever.photoURL,
+        userSenderId: msgSender.id,
+        userSenderFirstName: msgSender.firstName,
+        userSenderLastName: msgSender.lastName,
+        userSenderPhotoUrl: msgSender.photoURL,
+      }
+      await addConversations(item.id, conversation)
       dispatch(getUser())
     }
   }

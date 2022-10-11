@@ -47,12 +47,14 @@ const PendingRequestFriendItem = ({ sendingUser, sender }) => {
           borderRadius: '50%',
         }}
       />
-      <p>
+      {/*  <p>
         {sendingUser.firstName} {sendingUser.lastName}
-      </p>
+      </p> */}
       {chechkIfSender !== -1 ? (
         <>
-          <p>Accept for friend?</p>
+          <p>
+            Accept {sendingUser.firstName} {sendingUser.lastName} for friend?
+          </p>
           <button
             onClick={handleAddingFriendToPendingArray}
             className="bg-blue-200"
@@ -67,7 +69,9 @@ const PendingRequestFriendItem = ({ sendingUser, sender }) => {
           </button>{' '}
         </>
       ) : (
-        <p className="">Friend Request send</p>
+        <p className="">
+          Friend Request send to {sendingUser.firstName} {sendingUser.lastName}
+        </p>
       )}
     </div>
   )

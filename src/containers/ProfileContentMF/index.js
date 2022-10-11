@@ -9,7 +9,7 @@ const ProfileContentMF = () => {
       <div className="bg-white">
         <CoverProfileMF />
         <UserProfileMF />
-        <hr className="mx-5 border-zinc-300 max-w-6xl mx-auto" />
+        <hr className=" border-zinc-300 max-w-6xl mx-auto" />
         <NavbarProfileMF />
       </div>
 
