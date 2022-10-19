@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { useState, useRef } from 'react'
 import { addConversations } from '../../services/AuthService'
 import { getUser } from '../../features/dataSlice'
+import MessagesModal from '../MessagesModal'
 
 const ContactsModal = ({ item, index }) => {
   const dispatch = useDispatch()
@@ -16,13 +17,13 @@ const ContactsModal = ({ item, index }) => {
   const handleKeyPress = async (event) => {
     if (event.key === 'Enter') {
       let enteredPhrase = inputRef.current.value
-      let userReciever = mess.find((x) => x.id === item.id)
+      //let userReciever = mess.find((x) => x.id === item.id)
       let conversation = {
         enteredPhrase,
-        userRecieverId: userReciever.id,
+        /*       userRecieverId: userReciever.id,
         userRecieverFirstName: userReciever.firstName,
         userRecieverLastName: userReciever.lastName,
-        userRecieverPhotoUrl: userReciever.photoURL,
+        userRecieverPhotoUrl: userReciever.photoURL, */
         userSenderId: msgSender.id,
         userSenderFirstName: msgSender.firstName,
         userSenderLastName: msgSender.lastName,
@@ -30,6 +31,7 @@ const ContactsModal = ({ item, index }) => {
       }
       await addConversations(item.id, conversation)
       dispatch(getUser())
+      inputRef.current.value = ''
     }
   }
 
@@ -44,7 +46,7 @@ const ContactsModal = ({ item, index }) => {
             index === 1 && 'right-80 bottom-0 '
           } `}
         >
-          <div className=" relative p-4 w-full h-full ">
+          <div className=" relative p-4 w-full h-[92%] ">
             <div className=" relative bg-white rounded-lg shadow dark:bg-gray-700">
               <div className="flex justify-between items-center p-2 rounded-t border-b dark:border-gray-600">
                 <div
@@ -76,14 +78,16 @@ const ContactsModal = ({ item, index }) => {
                 </button>
               </div>
             </div>
-            <div className="bg-white w-full h-full flex flex-col p-6">
-              <div className="h-5/6"></div>
-              <div className="h-2/12 ">
+            <div className="bg-white w-full h-full flex flex-col p-2">
+              <div className="h-5/6 overflow-y-scroll ">
+                <MessagesModal />
+              </div>
+              <div className="mt-6  ">
                 <input
                   ref={inputRef}
                   type="text"
                   onKeyDown={handleKeyPress}
-                  className="bg-gray-300 w-3/6 rounded-3xl"
+                  className="bg-gray-300  rounded-3xl w-full "
                 />
               </div>
             </div>

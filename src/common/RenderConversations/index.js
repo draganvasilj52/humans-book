@@ -4,7 +4,8 @@ const RenderConversations = ({ item }) => {
 
   return (
     <>
-      {user.id === item.userRecieverId ? (
+      {
+        /* user.id === item.userRecieverId && */
         <div className="flex bg-gray-200  items-center z-10 ">
           <div
             className="h-6 w-6 bg-cover"
@@ -18,21 +19,7 @@ const RenderConversations = ({ item }) => {
           </p>
           <p className="pl-4">{item.enteredPhrase}</p>
         </div>
-      ) : (
-        <div className="flex bg-gray-200  items-center z-10 ">
-          <div
-            className="h-6 w-6 bg-cover"
-            style={{
-              backgroundImage: `url(${item.userRecieverPhotoUrl})`,
-              borderRadius: '50%',
-            }}
-          />
-          <p className="ml-4">
-            {item.userRecieverFirstName} {item.userRecieverLastName}
-          </p>
-          <p className="pl-4">{item.enteredPhrase}</p>
-        </div>
-      )}
+      }
     </>
   )
 }
