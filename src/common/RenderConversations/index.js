@@ -1,6 +1,5 @@
-import { useSelector } from 'react-redux/es/exports'
 const RenderConversations = ({ item }) => {
-  const user = useSelector((state) => state.data.user)
+  //const user = useSelector((state) => state.data.user)
 
   return (
     <>

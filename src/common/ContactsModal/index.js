@@ -10,7 +10,7 @@ const ContactsModal = ({ item, index }) => {
   const [iconHovered, setIconHovered] = useState(false)
   const inputRef = useRef('')
 
-  const mess = useSelector((state) => state.data.messengerArray)
+  // const mess = useSelector((state) => state.data.messengerArray)
   const user = useSelector((state) => state.data.user)
   const msgSender = { ...user }
 
